@@ -31,20 +31,40 @@
 // greetings +  instructions
 void print_init()
 {
-  printf("some text that says what this is and what to do next");
+  printf("\nsome text that says what this is and what to do next\n");
 };
 
 // bye bye
 void print_exit()
 {
-  printf("some last words when all is done");
+  printf("\nsome last words when all is done\n");
 }
 
+// matrix
 void print_matrix(double** A, int dim)
 {
-  printf("print the information, e.g. 'the dimension is %d '", dim);
+  printf("\n print the information, e.g. the dimension: %d \n", dim);
+  //rows
+  for (int i=0; i<dim; i++)
+    {
+      //columns
+      for(int j=0; j<dim; j++)
+	{
+	  printf("  %6.3f  ", *(*(A+i)+j)); // simple print: total 3 numbers, 1 after comma
+	}
+      printf("\n");  // begin new row
+    }
 }
-void print_vector(double* b, int dim);
+
+// vector
+void print_vector(double* b, int dim)
+{
+  for(int i=0; i<dim; i++)
+    {
+      printf("   %f \n", b[i]);
+    }
+}
+  
 void print_pivot_index(int i, int j);
 
 //void print_L(double** A, int rows, int columns);

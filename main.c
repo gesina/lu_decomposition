@@ -44,38 +44,47 @@ int main(void)
 
 
   // get and set all needed data
-  set_dimensions(); // ask dimension from user
+  dimension = get_dimension(); // ask dimension from user
 
   // init and get all variables
-  if( dimension > 0 ) {
-    double** A_init =  init_matrix();
-      if (A_init == -1) {return 2;}    // error with allociation?
-    set_matrix(A_init, dimension);               // get actual input
+  double** A_init;
+  double** A;     
+  double* b;      
+  double* pi;     
+  if( dimension > 0 )
+    {
+      A_init =  init_matrix(dimension);
+      if (!A_init) {return 2;}    // error with allociation?
+      set_matrix(A_init, dimension);               // get actual input
   
-    double** A = init_matrix(dimension);
-      if (A == -1) {return 2;}    // error with allociation?
-    copy_matrix(A, dimension);                   // copy A_init into workspace
+      A = init_matrix(dimension);
+      if (!A) {return 2;}    // error with allociation?
+      copy_matrix(A_init, A, dimension);                   // copy A_init into workspace
 
-    double* b = init_vector(dimension);        // equation system: Ax=b
-      if (b == -1) {return 2;}    // error with allociation?
-    
-    double* pi= init_vector(dimension);        // permutation vector
-      if (pi == -1) {return 2;}    // error with allociation?
-  }
-  else { printf("Dimension error, dimension is %i", dimension); return 2;} 
+      b = init_vector(dimension);        // equation system: Ax=b
+      if (!b) {return 2;}    // error with allociation?
+      set_vector(b, dimension);
+      
+      pi= init_vector(dimension);        // permutation vector
+      if (!pi) {return 2;}    // error with allociation?
+    }
+  else { printf("Dimension error, dimension is %d", dimension); return 2;} 
 
   
   // actual LU decompositon (b changed alongside)
-  lu_decomposition(A, b, pi);
-  print_matrix(A);             // print results
-  print_vector(pi);
+  //  lu_decomposition(A, b, pi, dimension);
+  printf("\nresult: \n");
+  print_matrix(A, dimension);             // print results
+  printf("\n A_init: \n"); print_matrix(A_init, dimension);
+  printf("\n Vector pi: \n");
+  print_vector(pi, dimension);
 
 
   // actual solving of Ax=b
   double* x= init_vector(dimension);
-  solve_equation(A, b, x);      // A now R, b now z
+  solve_equation(A, b, x, dimension);      // A now R, b now z
 
-  print_vector(x);            // print results
+  print_vector(x, dimension);            // print results
 
   
   

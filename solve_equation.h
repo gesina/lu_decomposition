@@ -29,7 +29,7 @@
 
 
 
-void solve_equation(double** R, double* z, double* x)
+void solve_equation(double** R, double* z, double* x, int dim)
 {
 
 }

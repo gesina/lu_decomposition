@@ -51,7 +51,7 @@ void print_pivot_index(int i, int j);
 
 
 // GET-FUNCTIONS
-void set_dimension(); // gets+sets matrix- and vector-dimensions from user (n,m)
+int get_dimension(); // gets+sets matrix- and vector-dimensions from user (n,m)
 void set_matrix(double** A, int dim); // gets+sets matrix entries from user (A)
 void set_vector(double* b, int dim); // gets+sets vector entries from user (b)
 
@@ -68,7 +68,7 @@ double** init_matrix(int dim); // allocates memory for matrix
 double* init_vector(int dim); // allocates memory for vector
 
 void free_memory_matrix(double** A, int dim);  // free memory from matrix
-void free_memory_vector(double* x, int dim);   // free memory from vector
+void free_memory_vector(double* x);   // free memory from vector
 
 void copy_matrix(double** A,double** B,int dim); // copy matrix A into B
 
@@ -76,7 +76,7 @@ void copy_matrix(double** A,double** B,int dim); // copy matrix A into B
 void lu_decomposition(double** A, double* b, double* pi, int dim);
 
 // actual solving of Ax=b
-void solve_equation(double** R, double* z, double* x);
+void solve_equation(double** R, double* z, double* x, int dim);
 
 
 
