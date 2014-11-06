@@ -46,16 +46,21 @@ int main(void)
   // get and set all needed data
   set_dimensions(); // ask dimension from user
 
+  // init and get all variables
   if( dimension > 0 ) {
-    double** A_init =  init_matrix(); 
+    double** A_init =  init_matrix();
+      if (A_init == -1) {return 2;}    // error with allociation?
     set_matrix(A_init, dimension);               // get actual input
   
     double** A = init_matrix(dimension);
+      if (A == -1) {return 2;}    // error with allociation?
     copy_matrix(A, dimension);                   // copy A_init into workspace
 
     double* b = init_vector(dimension);        // equation system: Ax=b
-
+      if (b == -1) {return 2;}    // error with allociation?
+    
     double* pi= init_vector(dimension);        // permutation vector
+      if (pi == -1) {return 2;}    // error with allociation?
   }
   else { printf("Dimension error, dimension is %i", dimension); return 2;} 
 
@@ -77,9 +82,9 @@ int main(void)
   // last but not least: 
   free_memory_matrix(A, dimension);
   free_memory_matrix(A_init, dimension);
-  free_memory_vector(b, dimension);
-  free_memory_vector(pi, dimension);
-  free_memory_vector(x, dimension);
+  free_memory_vector(b);
+  free_memory_vector(pi);
+  free_memory_vector(x);
     
   print_exit(); // Bye, bye
 
