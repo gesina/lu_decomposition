@@ -42,7 +42,7 @@ void print_exit()
 
 void print_matrix(double** A, int dim)
 {
-  printf("print the information, e.g. 'the dimension is %i '", dim);
+  printf("print the information, e.g. 'the dimension is %d '", dim);
 }
 void print_vector(double* b, int dim);
 void print_pivot_index(int i, int j);
