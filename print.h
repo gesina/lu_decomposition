@@ -43,7 +43,6 @@ void print_exit()
 // matrix
 void print_matrix(double** A, int dim)
 {
-  printf("\n print the information, e.g. the dimension: %d \n", dim);
   //rows
   for (int i=0; i<dim; i++)
     {
@@ -61,11 +60,17 @@ void print_vector(double* b, int dim)
 {
   for(int i=0; i<dim; i++)
     {
-      printf("   %f \n", b[i]);
+      printf("   %f \n", *(b+i));
     }
 }
-  
-void print_pivot_index(int i, int j);
+
+
+// prints index of last step
+void err_not_executable(int step_index)
+{
+  printf("\n\nSorry, the matrix cannot be pivoted!\n");
+  printf("Failed step:  %d\n", step_index);
+}
 
 //void print_L(double** A, int rows, int columns);
 //void print_R(double** A, int rows, int columns);

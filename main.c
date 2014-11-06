@@ -49,41 +49,58 @@ int main(void)
   // init and get all variables
   double** A_init;
   double** A;     
-  double* b;      
-  double* pi;     
+  double* b;
+  int* pi;     // permutation vector
+  
   if( dimension > 0 )
     {
       A_init =  init_matrix(dimension);
       if (!A_init) {return 2;}    // error with allociation?
-      set_matrix(A_init, dimension);               // get actual input
+      set_matrix(A_init, dimension);     // get actual input
   
       A = init_matrix(dimension);
       if (!A) {return 2;}    // error with allociation?
-      copy_matrix(A_init, A, dimension);                   // copy A_init into workspace
+      copy_matrix(A_init, A, dimension); // copy A_init into workspace
 
       b = init_vector(dimension);        // equation system: Ax=b
       if (!b) {return 2;}    // error with allociation?
       set_vector(b, dimension);
       
-      pi= init_vector(dimension);        // permutation vector
-      if (!pi) {return 2;}    // error with allociation?
+      pi= (int*) malloc(dimension*sizeof(int));
+      if ( pi == NULL )   // error with allociation?
+	{
+	  printf("Error allociating space in memory for the vector!\n");
+	  printf("Problem occured with init of vector.");
+	  return 2;
+	}
     }
-  else { printf("Dimension error, dimension is %d", dimension); return 2;} 
+  else { printf("Dimension error, dimension is %d", dimension); return 3;} 
 
   
   // actual LU decompositon (b changed alongside)
-  //  lu_decomposition(A, b, pi, dimension);
-  printf("\nresult: \n");
-  print_matrix(A, dimension);             // print results
-  printf("\n A_init: \n"); print_matrix(A_init, dimension);
-  printf("\n Vector pi: \n");
-  print_vector(pi, dimension);
+  if(!lu_decomposition(A, b, pi, dimension)) {return 1;}; // check also, whether
+                                                          // matrix is singular
 
+  printf("\n\nRESULT of LU DECOMPOSITION:\n");
+  printf("************************************************************\n");
+  printf("\n Matrix P*A: \n");
+  print_matrix(A_init, dimension);
+  printf("\n Decomposed matrix:\n");
+  print_matrix(A, dimension);             // print results
+  printf("\n Vector pi: \n");
+  // print pi
+  for(int i=0; i<dimension; i++)
+    {
+      printf("   %d \n", *(pi+i));
+    }
 
   // actual solving of Ax=b
   double* x= init_vector(dimension);
   solve_equation(A, b, x, dimension);      // A now R, b now z
 
+  printf("\n\nSOLUTION of LINEAR EQUATION SYSTEM Ax=b:\n");
+  printf("***********************************************************\n");
+  printf("\n VECTOR x: \n");
   print_vector(x, dimension);            // print results
 
   

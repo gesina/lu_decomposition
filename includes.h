@@ -44,7 +44,6 @@ void print_exit(); // bye bye
 
 void print_matrix(double** A, int dim);
 void print_vector(double* b, int dim);
-void print_pivot_index(int i, int j);
 
 //void print_L(double** A, int dim);
 //void print_R(double** A, int dim);
@@ -68,12 +67,12 @@ double** init_matrix(int dim); // allocates memory for matrix
 double* init_vector(int dim); // allocates memory for vector
 
 void free_memory_matrix(double** A, int dim);  // free memory from matrix
-void free_memory_vector(double* x);   // free memory from vector
+void free_memory_vector(void* x);   // free memory from vector
 
 void copy_matrix(double** A,double** B,int dim); // copy matrix A into B
 
 // actual LU decomposition algorithm
-void lu_decomposition(double** A, double* b, double* pi, int dim);
+_Bool lu_decomposition(double** A, double* b, int* pi, int dim);
 
 // actual solving of Ax=b
 void solve_equation(double** R, double* z, double* x, int dim);

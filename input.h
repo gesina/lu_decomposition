@@ -110,8 +110,11 @@ void set_matrix(double** A, int dim) // gets+sets matrix entries from user (A)
 	    }
 	}
 
-      printf("\nThe matrix input is finished.\n");
       // ask, wether to continue or to try again  
+      printf("\nYour entries have produced this matrix:\n");
+      print_matrix(A, dim);
+      printf("Take these entries?");
+      
       c = get_yesno();
       if ( c=='y' ) { b=0;}
       else {printf("\nTry again and enter the first row:\n");}
@@ -138,12 +141,12 @@ void set_vector(double* b, int dim) // gets+sets vector entries from user (b)
 	{
 	  scanf("%lf", (b+i)); // user read in
 	}
-	  
-      // show full row:
-      printf("Your vector b:\n ");
-      print_vector(b, dim);
-
+	 
       // ask, wether to continue or to try again  
+      printf("\nYour entries have produced this vector:\n");
+      print_vector(b, dim);
+      printf("Take these entries and proceed with LU Decomposition?");
+      
       c = get_yesno();
       if ( c=='y' ) { g=0;}
       else {printf("\n Try again and enter the vector:\n");}
@@ -165,7 +168,7 @@ double** init_matrix(int dim)
   // got space in memory?
   if ( matrix == NULL )
     {
-      printf("Error allociating space in memory for the matrix!");
+      printf("Error allociating space in memory for the matrix!\n");
       printf("Problem occured with init of A");
       return NULL; // exit
     }
@@ -179,7 +182,7 @@ double** init_matrix(int dim)
       // got space in memory?
       if(matrix[i] == NULL)
 	{
-	  printf("Error allociating space in memory for the matrix!");
+	  printf("Error allociating space in memory for the matrix!\n");
 	  printf("Problem occured with row: A[%d]", i);
 	  return NULL; // exit
 	}
@@ -192,13 +195,13 @@ double** init_matrix(int dim)
 
 double* init_vector(int dim) // allocates memory for vector
 {
-  // allocate space for matrix row-pointer
+  // allocate space for vector
   double* vector = (double*) malloc(dim*sizeof(double));
   
   // got space in memory?
   if ( vector == NULL )
     {
-      printf("Error allociating space in memory for the vector!");
+      printf("Error allociating space in memory for the vector!\n");
       printf("Problem occured with init of vector.");
       return NULL; // exit
     }
@@ -220,7 +223,7 @@ void free_memory_matrix(double** A, int dim)
 }
 
 // free memory from vector
-void free_memory_vector(double* x)
+void free_memory_vector(void* x)
 {
     free(x);
 }
@@ -236,9 +239,9 @@ void copy_matrix(double** A, double** B,int dim) // copy matrix A into B
       for ( int j=0; j<dim; j++)
 	{
 	  *(*(B+i)+j) = *(*(A+i)+j);
-	  printf("\nA[%i][%i] : %f", i,j, *(*(B+i)+j));
+	  // printf("\nA[%i][%i] : %f", i,j, *(*(B+i)+j));
 	}
     }
-  printf("\nwhole copied matrix A: \n");
-  print_matrix(A, dim);
+  /* printf("\nwhole copied matrix A: \n"); */
+  /* print_matrix(A, dim); */
 }
