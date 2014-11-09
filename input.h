@@ -87,7 +87,7 @@ void set_matrix(double** A, int dim) // gets+sets matrix entries from user (A)
   char c=' ';     // helper character
 
   printf("Dimension for set_matrix: %d\n" , dim);
-  printf("Please enter the matrix entries singularly.");
+  printf("Please enter the matrix entries separately.");
   do  // as long as input doesn't make sense: repeat
     {
       b=1; // stop default

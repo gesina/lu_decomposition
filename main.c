@@ -32,86 +32,104 @@
 #include "includes.h"
 
 
-// "global" variables
-static int dimension = -1;
-
-
 // main function
 int main(void)
 {
-  
-  print_init(); // greeting + instructions
+
+  // greeting + instructions
+  print_init();
 
 
-  // get and set all needed data
+  // get and set dimension
   dimension = get_dimension(); // ask dimension from user
-
-  // init and get all variables
-  double** A_init;
-  double** A;     
-  double* b;
-  int* pi;     // permutation vector
-  
-  if( dimension > 0 )
+  // last check for correct dimension:
+  if( dimension <= 0 )
     {
-      A_init =  init_matrix(dimension);
-      if (!A_init) {return 2;}    // error with allociation?
-      set_matrix(A_init, dimension);     // get actual input
-  
-      A = init_matrix(dimension);
-      if (!A) {return 2;}    // error with allociation?
-      copy_matrix(A_init, A, dimension); // copy A_init into workspace
-
-      b = init_vector(dimension);        // equation system: Ax=b
-      if (!b) {return 2;}    // error with allociation?
-      set_vector(b, dimension);
-      
-      pi= (int*) malloc(dimension*sizeof(int));
-      if ( pi == NULL )   // error with allociation?
-	{
-	  printf("Error allociating space in memory for the vector!\n");
-	  printf("Problem occured with init of vector.");
-	  return 2;
-	}
+      printf("Dimension error, dimension is %d", dimension);
+      return 3;
     }
-  else { printf("Dimension error, dimension is %d", dimension); return 3;} 
-
   
-  // actual LU decompositon (b changed alongside)
-  if(!lu_decomposition(A, b, pi, dimension)) {return 1;}; // check also, whether
-                                                          // matrix is singular
 
+  // init variables
+  double** A;     
+
+
+
+  // set A;
+  A =  init_matrix(dimension);
+  if (!A) {return 2;}    // error with allociation?
+  set_matrix(A, dimension);     // get actual input from user
+  
+  
+  
+  // ACTUAL LU DECOMPOSITION
+  //--------------------------------------------------
+  
+  struct LU_pi_step temp_struct = LU_decomposition(A, dimension);
+  
+  // check on allociation problems:
+  if ( temp_struct.step == -1 ) {return 2;}
+  // check also, whether matrix is singular:
+  if ( temp_struct.step > 0 ) {return 1;}
+
+  // if all worked well, print result
   printf("\n\nRESULT of LU DECOMPOSITION:\n");
   printf("************************************************************\n");
-  printf("\n Matrix P*A: \n");
-  print_matrix(A_init, dimension);
-  printf("\n Decomposed matrix:\n");
-  print_matrix(A, dimension);             // print results
-  printf("\n Vector pi: \n");
+  printf("\n Matrix A: \n");
+  print_matrix(A, dimension);              // print matrix from beginning
+  printf("\n Decomposed matrix P*A=L*U:\n");
+  print_matrix(temp_struct.LU, dimension);      // print results
+  printf("\n Permutation vector pi: \n");
   // print pi
   for(int i=0; i<dimension; i++)
     {
-      printf("   %d \n", *(pi+i));
+      printf("   %d \n", *(temp_struct.pi+i));
     }
 
-  // actual solving of Ax=b
+
+  
+  
+  // ACTUAL SOLVING of Ax=b
+  //----------------------------------------------
+
+  // init and set vector b
+  double* b = init_vector(dimension);        // equation system: Ax=b
+  if (!b) {return 2;}    // error with allociation?
+  printf("\n***********************************************************\n");
+  printf("***********************************************************\n");
+  printf("\n\nNow a linear equation system Ax=b can be solved.");
+  set_vector(b, dimension); // get entries from user
+
+  // FORWARD SUBSTITUTION for b:
+  // (means: write P*L*b = z into b
+  forward_substitution(b, temp_struct.pi, temp_struct.LU, dimension);
+
+   
+  // init vector x
   double* x= init_vector(dimension);
-  solve_equation(A, b, x, dimension);      // A now R, b now z
+
+  // BACKWARD SUBSTITUTION for x
+  // (means: write solution of Ux=z or Ax=b into x)
+  backward_substitution(temp_struct.LU, b, x, dimension);      // A now U, b now z
 
   printf("\n\nSOLUTION of LINEAR EQUATION SYSTEM Ax=b:\n");
   printf("***********************************************************\n");
   printf("\n VECTOR x: \n");
   print_vector(x, dimension);            // print results
 
+
+
   
   
   // last but not least: 
   free_memory_matrix(A, dimension);
-  free_memory_matrix(A_init, dimension);
+  free_memory_matrix(temp_struct.LU, dimension);
   free_memory_vector(b);
-  free_memory_vector(pi);
+  free_memory_vector(temp_struct.pi);
   free_memory_vector(x);
-    
-  print_exit(); // Bye, bye
+
+
+  // Bye, bye
+  print_exit();
 
 }

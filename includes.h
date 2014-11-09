@@ -36,6 +36,18 @@
 #include<float.h>
 
 
+// variables
+// return value of LU_decomposition():
+struct LU_pi_step
+{
+  double** LU;
+  int* pi;
+  int step;
+};
+
+// dimension
+static int dimension = -1;
+
 
 
 // PRINT-FUNCTIONS
@@ -72,10 +84,17 @@ void free_memory_vector(void* x);   // free memory from vector
 void copy_matrix(double** A,double** B,int dim); // copy matrix A into B
 
 // actual LU decomposition algorithm
-_Bool lu_decomposition(double** A, double* b, int* pi, int dim);
+struct LU_pi_step LU_decomposition(double** A, int dim);
 
 // actual solving of Ax=b
-void solve_equation(double** R, double* z, double* x, int dim);
+void forward_substitution(double* b, int* pi, double** L, int dim);
+void backward_substitution(double** U, double* z, double* x, int dim); 
+
+
+
+
+
+
 
 
 
@@ -83,5 +102,5 @@ void solve_equation(double** R, double* z, double* x, int dim);
 #include "print.h"
 #include "input.h"
 #include "lu_decomposition.h"
-#include "solve_equation.h"
+#include "substitutions.h"
 
