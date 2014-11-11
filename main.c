@@ -1,16 +1,18 @@
 
-
 /* ************************************************ */
 /*                                                  */
 /*   FILE: main.c                                   */
 /*                                                  */
-/*   PROJEKT:                                       */
+/*   PROJECT:                                       */
 /*   *************                                  */
-/*    LR-ZERLEGUNG MIT SPALTENPIVOTSUCHE            */
-/*       und Lösen eines linearen GLS               */
+/*    LU-DECOMPOSITION WITH PIVOTING                */
+/*      and                                         */
+/*    SOLVING OF A LINEAR EQUATION SYSTEM           */
 /*                                                  */
-/*   im Rahmen der Numerikvorlesung im WS14/15      */
-/*   von Prof. Dr. Blank an der Uni Regensburg      */
+/*   Excercise #20 for the lecture                  */
+/*   NUMERICAL MATHEMATICS in 2014/15               */
+/*   by Prof. Dr. Blank                             */
+/*   University of Regensburg                       */
 /*                                                  */
 /*   AUTHORS:                                       */
 /*   *************                                  */
@@ -22,13 +24,13 @@
 
 //---------------------------------------------------
 //
-//  Main executive file with LU decomposition
+//  Main executive file for LU decomposition
 //    and solving of linear equation system
 //
 //---------------------------------------------------
 
 
-// include all needed libraries and other functions
+// include all needed libraries and predefinitions
 #include "includes.h"
 
 
@@ -36,7 +38,7 @@
 int main(void)
 {
 
-  // greeting + instructions
+  // greeting
   print_init();
 
 
@@ -46,7 +48,7 @@ int main(void)
   if( dimension <= 0 )
     {
       printf("Dimension error, dimension is %d", dimension);
-      return 3;
+      return 3; // dimension error
     }
   
 
@@ -121,7 +123,7 @@ int main(void)
 
   
   
-  // last but not least: 
+  // last but not least:
   free_memory_matrix(A, dimension);
   free_memory_matrix(temp_struct.LU, dimension);
   free_memory_vector(b);
@@ -132,4 +134,6 @@ int main(void)
   // Bye, bye
   print_exit();
 
+
+  return 0;
 }

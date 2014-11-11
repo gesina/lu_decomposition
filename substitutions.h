@@ -1,16 +1,18 @@
 
-
 /* ************************************************ */
 /*                                                  */
 /*   FILE: solve_equation.h                         */
 /*                                                  */
-/*   PROJEKT:                                       */
+/*   PROJECT:                                       */
 /*   *************                                  */
-/*    LR-ZERLEGUNG MIT SPALTENPIVOTSUCHE            */
-/*       und Lösen eines linearen GLS               */
+/*    LU-DECOMPOSITION WITH PIVOTING                */
+/*      and                                         */
+/*    SOLVING OF A LINEAR EQUATION SYSTEM           */
 /*                                                  */
-/*   im Rahmen der Numerikvorlesung im WS14/15      */
-/*   von Prof. Dr. Blank an der Uni Regensburg      */
+/*   Excercise #20 for the lecture                  */
+/*   NUMERICAL MATHEMATICS in 2014/15               */
+/*   by Prof. Dr. Blank                             */
+/*   University of Regensburg                       */
 /*                                                  */
 /*   AUTHORS:                                       */
 /*   *************                                  */
@@ -28,40 +30,40 @@
 //---------------------------------------------------
 
 
-// changes vector b to z
+// changes given vector b to z
 void forward_substitution(double* b, int* pi, double** L, int dim)
 {
-
-  double temp_b=0;
+  double temp_b=0; // for swaping of row entries
   
   for (int k=0; k<dim-1; k++)
     {
-      // swap rows
+      // swap rows  b[k]<~>b[pi[k]]
       temp_b = b[k];
       b[k] = b[pi[k]];
       b[pi[k]] = temp_b;
 
-      // backwards substitution
+      // forward substitution
       for (int i=k+1; i<dim; i++)
 	{
 	  // b_{i} = b_{i} - l_{ik}*b_{k}
 	  *(b+i) = *(b+i) - ( (*(*(L+i)+k)) * (*(b+k)) );
 	}
     }
-  
+
+
+  // print result
   printf("\n Vector b:\n");
   print_vector(b, dim);
   
-    
 }
 
 
 
 
-// writes solution for Ux=z to x
+// writes solution of Ux=z into given vector x
 void backward_substitution(double** U, double* z, double* x, int dim)
 {
-  // got through the entries in x and set
+  // go through the entries in x and set
   // x_{k} = [ z_{k}^{(k-1)} - ( \sum_{j=k+1}^{n} r_{kj}^{(k-1)}*x_{j} ) ]
   
   // for k=n, ..., 1

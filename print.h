@@ -4,13 +4,16 @@
 /*                                                  */
 /*   FILE: print.h                                  */
 /*                                                  */
-/*   PROJEKT:                                       */
+/*   PROJECT:                                       */
 /*   *************                                  */
-/*    LR-ZERLEGUNG MIT SPALTENPIVOTSUCHE            */
-/*       und Lösen eines linearen GLS               */
+/*    LU-DECOMPOSITION WITH PIVOTING                */
+/*      and                                         */
+/*    SOLVING OF A LINEAR EQUATION SYSTEM           */
 /*                                                  */
-/*   im Rahmen der Numerikvorlesung im WS14/15      */
-/*   von Prof. Dr. Blank an der Uni Regensburg      */
+/*   Excercise #20 for the lecture                  */
+/*   NUMERICAL MATHEMATICS in 2014/15               */
+/*   by Prof. Dr. Blank                             */
+/*   University of Regensburg                       */
 /*                                                  */
 /*   AUTHORS:                                       */
 /*   *************                                  */
@@ -31,13 +34,22 @@
 // greetings +  instructions
 void print_init()
 {
-  printf("\nsome text that says what this is and what to do next\n");
+  printf("\n****************************************************");
+  printf("\n*                                                  *");
+  printf("\n*    LU-DECOMPOSITION WITH PIVOTING                *");
+  printf("\n*                 and                              *");
+  printf("\n*    SOLVING OF A LINEAR EQUATION SYSTEM           *");
+  printf("\n*                                                  *");
+  printf("\n****************************************************\n");
 };
 
 // bye bye
 void print_exit()
 {
-  printf("\nsome last words when all is done\n");
+  printf("\nThanks for using this little programm.\n");
+  printf("\n      Yours");
+  printf("\n             Kerstin Blomenhofer");
+  printf("\n             Gesina Schwalbe\n\n");
 }
 
 // matrix

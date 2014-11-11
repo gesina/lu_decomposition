@@ -1,16 +1,18 @@
 
-
 /* ************************************************ */
 /*                                                  */
 /*   FILE: input.h                                  */
 /*                                                  */
-/*   PROJEKT:                                       */
+/*   PROJECT:                                       */
 /*   *************                                  */
-/*    LR-ZERLEGUNG MIT SPALTENPIVOTSUCHE            */
-/*       und Lösen eines linearen GLS               */
+/*    LU-DECOMPOSITION WITH PIVOTING                */
+/*      and                                         */
+/*    SOLVING OF A LINEAR EQUATION SYSTEM           */
 /*                                                  */
-/*   im Rahmen der Numerikvorlesung im WS14/15      */
-/*   von Prof. Dr. Blank an der Uni Regensburg      */
+/*   Excercise #20 for the lecture                  */
+/*   NUMERICAL MATHEMATICS in 2014/15               */
+/*   by Prof. Dr. Blank                             */
+/*   University of Regensburg                       */
 /*                                                  */
 /*   AUTHORS:                                       */
 /*   *************                                  */
@@ -30,7 +32,7 @@
 
 // GET-FUNCTIONS
 
-char get_yesno()
+char get_yesno()  // ask user for input of yes or no
 {
   _Bool b=1;
   char c=' ';
@@ -49,8 +51,8 @@ char get_yesno()
 }
 
 
-// gets+sets matrix- and vector-dimensions from user (n,m)
-int get_dimension()
+
+int get_dimension()  // gets matrix- and vector-dimensions from user (=n)
 {
 
   int dim = -1; // dimension to return
@@ -61,6 +63,7 @@ int get_dimension()
     {
       b=0; // stop if not set to 1
 
+      //      while(getchar()!='\n');  // necessary to avoid reading newline
       scanf("%d", &dim); // user read in
 
       // verify input
@@ -79,7 +82,7 @@ int get_dimension()
 
 }
 
-
+ 
 void set_matrix(double** A, int dim) // gets+sets matrix entries from user (A)
 {
   
@@ -94,11 +97,12 @@ void set_matrix(double** A, int dim) // gets+sets matrix entries from user (A)
       
       for (int i=0; i<dim; i++)
 	{
-	  printf("\n Enter row #%i:\n", i);
+	  printf("\n Enter row #%i:\n", i+1);
 
 	  // read entries in
 	  for ( int j=0; j<dim; j++)
 	    {
+	      while(getchar()!='\n');  // necessary to avoid reading newline
 	      scanf("%lf", (*(A+i)+j)); // user read in
 	    }
 	  
@@ -139,6 +143,7 @@ void set_vector(double* b, int dim) // gets+sets vector entries from user (b)
       // read entries in
       for ( int i=0; i<dim; i++)
 	{
+	  while(getchar()!='\n');  // necessary to avoid reading newline
 	  scanf("%lf", (b+i)); // user read in
 	}
 	 
@@ -159,6 +164,7 @@ void set_vector(double* b, int dim) // gets+sets vector entries from user (b)
 
 
 // MEMORY MANAGEMENT
+
 // allocation functions
 double** init_matrix(int dim)
 {
@@ -210,9 +216,10 @@ double* init_vector(int dim) // allocates memory for vector
   
 };
 
+
+
 // memory free functions
-// free memory from matrix
-void free_memory_matrix(double** A, int dim)
+void free_memory_matrix(double** A, int dim)     // free memory from matrix
 {
   // free rows
   for (int i=0; i<dim; i++)
@@ -222,14 +229,15 @@ void free_memory_matrix(double** A, int dim)
   free(A);
 }
 
-// free memory from vector
-void free_memory_vector(void* x)
+
+void free_memory_vector(void* x)                 // free memory from vector
 {
     free(x);
 }
 
 
-// matrix copy
+
+// copy function
 void copy_matrix(double** A, double** B,int dim) // copy matrix A into B
 {
   // rows
@@ -239,9 +247,6 @@ void copy_matrix(double** A, double** B,int dim) // copy matrix A into B
       for ( int j=0; j<dim; j++)
 	{
 	  *(*(B+i)+j) = *(*(A+i)+j);
-	  // printf("\nA[%i][%i] : %f", i,j, *(*(B+i)+j));
 	}
-    }
-  /* printf("\nwhole copied matrix A: \n"); */
-  /* print_matrix(A, dim); */
+    };
 }

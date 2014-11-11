@@ -1,16 +1,18 @@
 
-
 /* ************************************************ */
 /*                                                  */
 /*   FILE: lu_decomposition.h                       */
 /*                                                  */
-/*   PROJEKT:                                       */
+/*   PROJECT:                                       */
 /*   *************                                  */
-/*    LR-ZERLEGUNG MIT SPALTENPIVOTSUCHE            */
-/*       und Lösen eines linearen GLS               */
+/*    LU-DECOMPOSITION WITH PIVOTING                */
+/*      and                                         */
+/*    SOLVING OF A LINEAR EQUATION SYSTEM           */
 /*                                                  */
-/*   im Rahmen der Numerikvorlesung im WS14/15      */
-/*   von Prof. Dr. Blank an der Uni Regensburg      */
+/*   Excercise #20 for the lecture                  */
+/*   NUMERICAL MATHEMATICS in 2014/15               */
+/*   by Prof. Dr. Blank                             */
+/*   University of Regensburg                       */
 /*                                                  */
 /*   AUTHORS:                                       */
 /*   *************                                  */
@@ -27,6 +29,7 @@
 //---------------------------------------------------
 
 
+// LU decomposition of given Matrix A, returns completion indicator
 int lu_decomposition(double** A, int* pi, int dim)
 {
   // write pi
@@ -55,7 +58,6 @@ int lu_decomposition(double** A, int* pi, int dim)
 	      pos_max_entry = i;
 	    }
 	}
-      //printf("\nmax_entry: %f,   pos_max_entry: %d", max_entry, pos_max_entry);
 
       // swap rows
       temp_pi = pi[k];                       // in pi
@@ -66,16 +68,11 @@ int lu_decomposition(double** A, int* pi, int dim)
       *(A+k)=*(A+pos_max_entry);
       *(A+pos_max_entry)=temp_a;
 
-      /* temp_b= b[k];                          // in b */
-      /* b[k]=b[pos_max_entry]; */
-      /* b[pos_max_entry]=temp_b; */
-
-      
 
       // print step
       printf("\n\n STEP %d\n", k+1);
       printf("*******************");
-      // prints Pivot index
+      // print current Pivot index
       printf("\nCurrent Pivot index:  A[%d][%d] = %f", pos_max_entry, k, (*(*A+k)+k));
       printf("\n Matrix:\n");
       print_matrix(A, dim);
@@ -85,13 +82,13 @@ int lu_decomposition(double** A, int* pi, int dim)
 	{
 	  printf("   %d \n", *(pi+i));
 	}
-      /* printf("\n Vector b:\n"); */
-      /* print_vector(b, dim); */
 
 
+
+      
       // LU Decomposition
       //---------------------------------
-      // check on singularity:
+      // check, whether next step executable:
       if ( max_entry == 0 )
 	{
 	  err_not_executable(k+1);
@@ -110,22 +107,29 @@ int lu_decomposition(double** A, int* pi, int dim)
 	      // a_{ij} = a_{ij} - l_{ik}*a_{ki}
 	      *(*(A+i)+j) = *(*(A+i)+j) - ( (*(*(A+i)+k)) * (*(*(A+k)+j)) );
 	    }
-
-	  /* // b */
-	  /* // b_{i} = b_{i} - l_{ik}*b_{k} */
-	  /* *(b+i) = *(b+i) - ( (*(*(A+i)+k)) * (*(b+k)) ); */
-
 	}
 
-      // print step
+      // print result of this step
       printf("\n New Matrix:\n");
       print_matrix(A, dim);
-      /* printf("\n New Vector b:\n"); */
-      /* print_vector(b, dim); */
       
     }
 
-    
+
+  // last check on singularity:
+  if ( *(*(A+dim-1)+dim-1) == 0 )
+    {
+      printf("\n\nRESULT of LU DECOMPOSITION:\n");
+      printf("************************************************************\n");
+      printf("\nThe LU decomposition of A results in\n");
+      print_matrix(A, dim);
+      printf("\nBut A is not regular!!");
+      printf("\nThus there's not always a solution for Ax=b independently of b,");
+      printf("\n  and we cannot proceed, sorry.\n\n");
+      
+      return dim;  // return last step failed
+    }
+  
 
   return 0; // finished and worked well
 }
@@ -135,11 +139,13 @@ int lu_decomposition(double** A, int* pi, int dim)
 
 
 
-
+// prepares call of lu_decomposition
+//   (init of LU, pi)
+// and returns struct with LU, pi, step
 struct LU_pi_step LU_decomposition(double** A, int dimension)
 {
-  // init of struct to return with
-  // default value for allociation error
+  // init of struct to return
+  // with default value for allociation error
   struct LU_pi_step return_struct = {NULL, NULL, -1};
   
   // init of permutation vector pi
@@ -148,7 +154,7 @@ struct LU_pi_step LU_decomposition(double** A, int dimension)
     {
       printf("Error allociating space in memory for the vector!\n");
       printf("Problem occured with init of permutation vector.");
-      return return_struct;
+      return return_struct;  // return: allociation error
     };
   
   // write entries of permutation vector
@@ -157,19 +163,21 @@ struct LU_pi_step LU_decomposition(double** A, int dimension)
 
   // init of LU matrix
   return_struct.LU = init_matrix(dimension);
-  if (!return_struct.LU) {return return_struct;}    // error with allociation?
+  if (!return_struct.LU)            // error with allociation?
+    {
+      return return_struct;  // return: allociation error
+    }
   
   // set return_struct.LU to A:
   copy_matrix(A, return_struct.LU, dimension);
 
   
-  // decompose A to LR and set step
-  // (step=0: worked well; step>0: failed
+  // decompose A to LU and set step
+  // (step=0: worked well;
+  //  step>0: failed on step number step)
   return_struct.step = lu_decomposition(return_struct.LU, return_struct.pi, dimension);
 
-  return return_struct;
+  return return_struct;  // return LU, pi, step
   
 }
-  
-
 
