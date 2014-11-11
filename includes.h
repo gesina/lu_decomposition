@@ -53,7 +53,8 @@ struct LU_pi_step
 // dimension
 static int dimension = -1; // -1: to test, whether get_dimension() worked
 
-
+// machine epsilon
+#define DBL_EPSILON 2.2204460492503131E-16
 
 // PRINT-FUNCTIONS
 void print_init(); // greetings

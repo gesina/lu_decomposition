@@ -117,7 +117,7 @@ int lu_decomposition(double** A, int* pi, int dim)
 
 
   // last check on singularity:
-  if ( *(*(A+dim-1)+dim-1) == 0 )
+  if ( fabs(*(*(A+dim-1)+dim-1)) <= DBL_EPSILON ) // last pivot element zero?
     {
       printf("\n\nRESULT of LU DECOMPOSITION:\n");
       printf("************************************************************\n");
