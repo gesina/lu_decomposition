@@ -1,5 +1,4 @@
 
-
 /* ************************************************ */
 /*                                                  */
 /*   FILE: print.h                                  */
@@ -83,7 +82,3 @@ void err_not_executable(int step_index)
   printf("\n\nSorry, the matrix cannot be pivoted!\n");
   printf("Failed step:  %d\n", step_index);
 }
-
-//void print_L(double** A, int rows, int columns);
-//void print_R(double** A, int rows, int columns);
-
