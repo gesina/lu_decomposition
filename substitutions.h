@@ -34,14 +34,19 @@
 void forward_substitution(double* b, int* pi, double** L, int dim)
 {
   double temp_b=0; // for swaping of row entries
-  
+
+  // first swap all rows into new order
   for (int k=0; k<dim-1; k++)
     {
       // swap rows  b[k]<~>b[pi[k]]
       temp_b = b[k];
       b[k] = b[pi[k]];
       b[pi[k]] = temp_b;
+    }
 
+  // now calculate new entries iteratively
+  for (int k=0; k<dim-1; k++)
+    {
       // forward substitution
       for (int i=k+1; i<dim; i++)
 	{
@@ -52,7 +57,7 @@ void forward_substitution(double* b, int* pi, double** L, int dim)
 
 
   // print result
-  printf("\n Vector b:\n");
+  printf("\n Vector after forward substitution:\n");
   print_vector(b, dim);
   
 }
@@ -81,6 +86,5 @@ void backward_substitution(double** U, double* z, double* x, int dim)
 
       // x_{k} = x_{k}/r_{kk}
       *(x+k) = (*(x+k)) /  (*(*(U+k)+k));
-      
     }
 }
