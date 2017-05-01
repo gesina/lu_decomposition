@@ -1,8 +1,8 @@
-#ifndef INPUT
-#define INPUT
+#ifndef MAIN
+#define MAIN
 /* ************************************************ */
 /*                                                  */
-/*   FILE: input.h                                  */
+/*   FILE: main.h                                   */
 /*                                                  */
 /*   PROJECT:                                       */
 /*   *************                                  */
@@ -25,49 +25,22 @@
 
 //---------------------------------------------------
 //
-//   All input functions
-//    and memory allocation
+//  Main executive file for LU decomposition
+//    and solving of linear equation system
 //
 //---------------------------------------------------
 
 
-// GET-FUNCTIONS
+// VARIABLES
+// dimension
+static int dimension = -1; // -1: to test, whether get_dimension() worked
 
-// ask user for input of yes or not
-char get_yesno();
-
-// gets matrix- and vector-dimensions from user (=n)
-int get_dimension();
-
-// gets+sets matrix entries from user (A)
-void set_matrix(double** A, int dim);
-
-// gets+sets vector entries from user (b)
-void set_vector(double* b, int dim);
-
-
-
-// MEMORY MANAGEMENT
-
-//  ALLOCATION
-// allocates memory for matrix
-double** init_matrix(int dim);
-
-// allocates memory for vector
-double* init_vector(int dim);
-
-
-//  MEMORY FREEING
-// free memory from matrix
-void free_memory_matrix(double** A, int dim);
-
-// free memory from vector
-void free_memory_vector(void* x);
-
-
-//  COPY
-// copy matrix A into B
-void copy_matrix(double** A, double** B,int dim);
-
+// MAIN function
+int main(void);
+// ERROR CODES:
+//  3: dimension error, dimension after user input lower 0
+//  2: allociation error, malloc() didn't work
+//  1: matrix not decomposable
+//  0: exited normally
 
 #endif

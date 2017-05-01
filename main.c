@@ -31,7 +31,14 @@
 
 
 // include all needed libraries and predefinitions
-#include "includes.h"
+#include <stdio.h>  // printf()
+#include <stdlib.h> // malloc()
+
+#include "main.h"
+#include "input.h"
+#include "print.h"
+#include "lu_decomposition.h"
+#include "substitutions.h"
 
 
 // main function
