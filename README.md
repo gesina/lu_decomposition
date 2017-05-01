@@ -13,6 +13,7 @@ For a matrix *A* the algorithm yields a permutation of rows *P* (can be
 written as vector) and a matrix *B*, s.t. taking
 - *L* the part of *B* below the diagonal (the latter inclusive) and
 - *U* the part of *B* above the diagonal (the latter inclusive)
+
 then *PA=LU* and all entries of *L* have absolute value lower than 1.
 See also the description in the 
 [corresponding script of the lecture](https://github.com/gesina/numerik2014).
@@ -36,7 +37,8 @@ The output program `lu_decomposition` will, after calling it with
   (i.e. the permutation vector *P* and the state of *B*)
 - ask for the input of a vector *b*
 - print the single steps for the __solution of the linear equation
-  system *Ax=b*__ with the LU decomposition from above
+  system *Ax=b*__ with the LU decomposition from above, using forward
+  and backward substitution.
 
 See also the comments in the source files.
 
